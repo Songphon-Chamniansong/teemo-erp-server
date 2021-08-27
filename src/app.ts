@@ -1,17 +1,36 @@
-import express, { Application, Request, Response } from 'express';
-import mongoose from 'mongoose';
-const app: Application = express();
-const port: number = 3000;
+import 'reflect-metadata';
+import { InversifyExpressServer } from 'inversify-express-utils';
+import { ProcessConfigLoader } from './config/env';
+import { DbConnection } from './db/utils/connection.db';
+import { ContainerConfigLoader } from './config/container';
+import express from 'express'
 
-const dbURL = 'mongodb+srv://teemo:Teemo123@teemocluster.ubber.mongodb.net/classroom?retryWrites=true&w=majority'
+// import controller
+import './controllers/home.controller';
+// import './controllers/parking-lot.controller';
 
-// use mongoose for mongodb
-mongoose.connect(dbURL, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true });
+// Load process.env config
+ProcessConfigLoader.Load('/dist/.env');
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!!!');
-});
+// Create connection string
+process.env.DB_CONN_STR = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${process.env.DB_DB_NAME}?retryWrites=true&w=majority`;
 
-app.listen(port, (): void => {
-  console.log(`server is listening on ${port}`);
+// load everything needed to the Container
+const container = ContainerConfigLoader.Load();
+
+DbConnection.initConnection(process.env.DB_CONN_STR).then(() => {
+    DbConnection.setAutoReconnect(process.env.DB_CONN_STR);
+
+    // start the server
+    const server = new InversifyExpressServer(container);
+
+    server.setConfig((app) => {
+        app.use(express.urlencoded({extended: true}));
+        app.use(express.json());
+    });
+
+    const serverInstance = server.build();
+    serverInstance.listen(process.env.PORT, () => {
+        console.log(`Server started on port ${process.env.PORT}`);
+    });
 });

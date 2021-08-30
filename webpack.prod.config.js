@@ -1,7 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
@@ -11,15 +10,8 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            configFile: 'tsconfig.prod.json'
-                        }
-                    }
-                ],
-                exclude: /node_modules/
+                use: 'ts-loader',
+                exclude: [/node_modules/]
             }
         ]
     },

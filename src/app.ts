@@ -7,7 +7,7 @@ import express from 'express';
 
 // import controller
 import './controllers/home.controller';
-// import './controllers/parking-lot.controller';
+import './controllers/po.controller';
 
 // Load process.env config
 ProcessConfigLoader.Load('/dist/.env');

@@ -3,7 +3,7 @@ import { InversifyExpressServer } from 'inversify-express-utils';
 import { ProcessConfigLoader } from './config/env';
 import { DbConnection } from './db/utils/connection.db';
 import { ContainerConfigLoader } from './config/container';
-import express from 'express'
+import express from 'express';
 
 // import controller
 import './controllers/home.controller';

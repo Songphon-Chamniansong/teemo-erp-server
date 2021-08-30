@@ -7,9 +7,9 @@ export interface CreatePO {
         address: string;
     };
     paymentTypeId: string;
-    items: {
+    inventories: {
         id: string;
-        amount: number;
+        qty: number;
     }[];
     approveById: string;
 }
@@ -20,7 +20,7 @@ export interface PoData {
     customerId: PoDocument['customerId'];
     paymentType: PoDocument['paymentType'];
     deliveryInformation: PoDocument['deliveryInformation'];
-    itemsInformation: PoDocument['itemsInformation'];
+    inventoryInformation: PoDocument['inventoryInformation'];
     createdInformation: PoDocument['createdInformation'],
     approvedInformation: PoDocument['approvedInformation'],
     companyInformation: PoDocument['companyInformation']

@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "Teemo ERP Server",
   "scripts": {
-    "dev": "webpack --config webpack.dev.config.js",
-    "prod": "webpack --config webpack.prod.config.js",
+    "build:dev": "webpack --config webpack.dev.config.js",
+    "build:prod": "webpack --config webpack.prod.config.js",
+    "build:debug": "tsc && npm run copy:dev",
+    "start:debug": "node dist/app.js",
+    "start": "node dist/bundle.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "start": "node dist/bundle.js",
     "copy:dev": "cp env/dev/.env dist",
-    "build:dev": "tsc && npm run copy:dev",
-    "start:dev": "node dist/app.js"
+    "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",

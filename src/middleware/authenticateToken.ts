@@ -17,24 +17,23 @@ export const authenticateToken = (request: Request, response: Response, next: Ne
         return unauthorized('Required ${requestHeader} header not found.', 401);
     }
     verify(token, secret, (err: VerifyErrors | null, decode: JwtPayload | undefined) => {
-        console.log(decode, Date.now())
         if (err || !decode) {
             return unauthorized('Your Token is not valid.');
         }
         request.body.authToken = convertJwtPayLoad2Account(decode);
         next();
-    })
-}
+    });
+};
 
 const convertJwtPayLoad2Account = (decode: JwtPayload) => {
     const authToken: AuthToken = {
         account: decode['account'],
         ...decode
-    }
-    return authToken
-}
+    };
+    return authToken;
+};
 
 export const generateAccessToken = (user: CreateCustomer): string => {
     const token = sign({ account: user }, secret, { expiresIn: '3h' });
     return token;
-}
+};

@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 // import { InitDataBase } from './init.db';
 
 export class DbConnection {
-    public static async initConnection(dbUri: string) {
+    public static async initConnection(dbUri: string): Promise<void> {
         await DbConnection.connect(dbUri);
     }
 
-    public static async connect(connStr: string) {
+    public static async connect(connStr: string): Promise<void>{
        return mongoose.connect(connStr,
             { useFindAndModify: false, autoIndex: true },
             ).then(() => {
@@ -22,11 +22,11 @@ export class DbConnection {
             });
     }
 
-    public static setAutoReconnect(connStr: string) {
+    public static setAutoReconnect(connStr: string): void {
         mongoose.connection.on('disconnected', () => DbConnection.connect(connStr));
     }
 
-    public static async disconnect() {
+    public static async disconnect(): Promise<void> {
        await mongoose.connection.close();
     }
 }

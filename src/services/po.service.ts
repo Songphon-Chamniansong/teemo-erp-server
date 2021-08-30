@@ -3,9 +3,11 @@ import { IPoRepository } from '../repositories/po.repository';
 import { ICustomerRepository } from '../repositories/customer.repository';
 import TYPES from '../config/types';
 import { CreatePO, PoData } from '../data/po.data';
+import { JResult, setJResult } from '../data/result.data';
+import { PoDocument } from '../db/models/po.model';
 
 export interface IPoService {
-    createPo(createPO: CreatePO): Promise<void>
+    createPo(createPO: CreatePO): Promise<JResult<PoDocument>>
 }
 
 @injectable()
@@ -15,13 +17,13 @@ export class PoService implements IPoService {
         @inject(TYPES.ICustomerRepository) private customerRepository: ICustomerRepository
     ) {}
 
-    public async createPo(createPO: CreatePO): Promise<void> {
+    public async createPo(createPO: CreatePO): Promise<JResult<PoDocument>> {
         if(!createPO.customer.id) {
             const customer = {
                 code: 'C-' + Date.now(),
                 name: createPO.customer.name,
                 address: createPO.customer.address
-            }
+            };
             const newCustomer = await this.customerRepository.create(customer);
             createPO.customer.id = newCustomer._id;
         }
@@ -37,14 +39,7 @@ export class PoService implements IPoService {
                 code: 'KERRY',
                 name: 'KERRY'
             },
-            itemsInformation: [ 
-                {
-                    code: 'A23-123',
-                    name: 'Cat Nip',
-                    price: 300,
-                    qty: 3
-                }
-            ],
+            inventoryInformation: [],
             createdInformation: {
                 createdBy: '610408a19fb13806b827f426',
                 createDate: new Date(),
@@ -57,7 +52,14 @@ export class PoService implements IPoService {
                 taxId: '11244',
                 address: '112/44 Thailand'
             }
-        }
-        await this.poRepository.create(poData)
+        };
+        createPO.inventories.forEach(inventory => {
+            poData.inventoryInformation.push({
+                inventoryId: inventory.id,
+                qty: inventory.qty
+            });
+        });
+        const po = await this.poRepository.create(poData);
+        return setJResult<PoDocument>({ isSuccess: true, value: po });
     }
 }

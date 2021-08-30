@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { UserDocument } from './user.model';
 import { CustomerDocument } from './customer.model';
+import { InventoryDocument } from './inventory.model';
 
 export interface PoDocument extends Document {
     code: string;
@@ -14,12 +15,10 @@ export interface PoDocument extends Document {
         code: string;
         name: string;
     };
-    itemsInformation: [{
-        code: string;
-        name: string;
-        price: number;
+    inventoryInformation: {
+        inventoryId: InventoryDocument['_id'];
         qty: number;
-    }];
+    }[];
     createdInformation: {
         createdBy: UserDocument['_id'],
         createDate: Date;
@@ -46,11 +45,9 @@ const poSchema = new Schema({
         code: { type: String },
         name: { type: String }
     },
-    itemsInformation: [
+    inventoryInformation: [
         {
-            code: { type: String },
-            name: { type: String },
-            price: { type: Number },
+            inventoryId: { type: Schema.Types.ObjectId },
             qty: { type: Number }
         }
     ],

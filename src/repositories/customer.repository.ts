@@ -17,7 +17,7 @@ export class CustomerRepository implements ICustomerRepository {
                 code: result.code,
                 name: result.name,
                 address: result.address
-            }
+            };
         }
         return null;
     }
@@ -29,7 +29,7 @@ export class CustomerRepository implements ICustomerRepository {
                 code: result.code,
                 name: result.name,
                 address: result.address
-            }
+            };
         }
         return null;
     }

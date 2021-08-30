@@ -1,17 +1,19 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request } from 'express';
 import { inject } from 'inversify';
-import { controller, httpGet, httpPost } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpPost } from 'inversify-express-utils';
 import { IPoService } from '../services/po.service';
 import TYPES from '../config/types';
+import { JsonResult } from 'inversify-express-utils/dts/results';
 
 @controller('/po')
-export class PoController {
+export class PoController extends BaseHttpController {
     constructor(@inject(TYPES.IPoService) private poService: IPoService) {
+        super();
     }
 
     @httpPost('/create')
-    public create(req: Request, res: Response, next: NextFunction): string {
-        this.poService.createPo(req.body);
-        return 'Hellow World!!!';
+    public async create(req: Request): Promise<JsonResult> {
+        const content = await this.poService.createPo(req.body);
+        return this.json(content, 200);
     }
 }

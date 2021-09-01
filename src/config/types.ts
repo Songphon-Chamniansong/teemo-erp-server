@@ -5,7 +5,8 @@ const TYPES = {
 
     // Repositories
     IPoRepository: Symbol.for('IPoRepository'),
-    ICustomerRepository: Symbol.for('ICustomerRepository')
+    ICustomerRepository: Symbol.for('ICustomerRepository'),
+    IUserRepository: Symbol.for('IUserRepository')
 };
 
 export default TYPES;

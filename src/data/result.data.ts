@@ -12,19 +12,19 @@ export interface JResultList<Type> {
     value?: Type[];
 }
 
-export const setJResult = <T>(data: { isSuccess: boolean, value?: T, errorCode?: string, errorMessage?: string,  }): JResult<T> => {
+export const setJResult = <T>(result: { isSuccess: boolean, value?: T, errorCode?: string, errorMessage?: string }): JResult<T> => {
     return {
-        ok: data.isSuccess,
-        errorCode: data.errorCode || '',
-        errorMessage: data.errorMessage || '',
-        value: data.value || null
+        ok: result.isSuccess,
+        errorCode: result.errorCode || '',
+        errorMessage: result.errorMessage || '',
+        value: result.value || null
     };
 };
-export const setJResultList = <T>(data: { isSuccess: boolean, value?: T[], errorCode?: string, errorMessage?: string,  }): JResultList<T> => {
+export const setJResultList = <T>(result: { isSuccess: boolean, value?: T[], errorCode?: string, errorMessage?: string }): JResultList<T> => {
     return {
-        ok: data.isSuccess,
-        errorCode: data.errorCode || '',
-        errorMessage: data.errorMessage || '',
-        value: data.value || null
+        ok: result.isSuccess,
+        errorCode: result.errorCode || '',
+        errorMessage: result.errorMessage || '',
+        value: result.value || null
     };
 };

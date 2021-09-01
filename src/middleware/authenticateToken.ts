@@ -5,35 +5,39 @@ import { CreateCustomer } from '../data/customer.data';
 
 const secret: string = process.env.TOKEN_SECRET || 'Teemo';
 
-export const authenticateToken = (request: Request, response: Response, next: NextFunction) => {
-    const unauthorized = (message: string, status = 403) => response.status(status).json({
-        ok: false,
-        status: status,
-        message: message
-    });
-    const authHeader = request.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) {
-        return unauthorized('Required ${requestHeader} header not found.', 401);
-    }
-    verify(token, secret, (err: VerifyErrors | null, decode: JwtPayload | undefined) => {
-        if (err || !decode) {
-            return unauthorized('Your Token is not valid.');
+export class Authentication {
+    public static AuthenticateToken(request: Request, response: Response, next: NextFunction): void {
+        const unauthorized = (message: string, status = 403) => response.status(status).json({
+            ok: false,
+            status: status,
+            message: message
+        });
+        const authHeader = request.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        if (token == null) {
+            unauthorized('Required ${requestHeader} header not found.', 401);
+            return;
         }
-        request.body.authToken = convertJwtPayLoad2Account(decode);
-        next();
-    });
-};
+        verify(token, secret, (err: VerifyErrors | null, decode: JwtPayload | undefined) => {
+            if (err || !decode) {
+                unauthorized('Your Token is not valid.');
+                return;
+            }
+            request.body.authToken = Authentication.ConvertJwtPayLoad2Account(decode);
+            next();
+        });
+    }
 
-const convertJwtPayLoad2Account = (decode: JwtPayload) => {
-    const authToken: AuthToken = {
-        account: decode['account'],
-        ...decode
-    };
-    return authToken;
-};
+    private static ConvertJwtPayLoad2Account(decode: JwtPayload): AuthToken {
+        const authToken: AuthToken = {
+            account: decode['account'],
+            ...decode
+        };
+        return authToken;
+    }
 
-export const generateAccessToken = (user: CreateCustomer): string => {
-    const token = sign({ account: user }, secret, { expiresIn: '3h' });
-    return token;
-};
+    public static GenerateAccessToken(user: CreateCustomer): string {
+        const token = sign({ account: user }, secret, { expiresIn: '3h' });
+        return token;
+    }
+}

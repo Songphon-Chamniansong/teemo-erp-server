@@ -1,6 +1,6 @@
 import { inject } from 'inversify';
 import { controller, httpGet } from 'inversify-express-utils';
-import { authenticateToken } from '../middleware/authenticateToken';
+import { Authentication } from '../middleware/authenticateToken';
 import TYPES from '../config/types';
 import { HomeService } from '../services/home.service';
 
@@ -8,7 +8,7 @@ import { HomeService } from '../services/home.service';
 export class HomeController {
     constructor(@inject(TYPES.HomeService) private homeService: HomeService) {}
 
-    @httpGet('/', authenticateToken)
+    @httpGet('/', Authentication.AuthenticateToken)
     public get(): string {
         this.homeService.get();
         return 'Hellow World!!!';

@@ -25,7 +25,7 @@ DbConnection.initConnection(process.env.DB_CONN_STR).then(() => {
     const server = new InversifyExpressServer(container);
 
     server.setConfig((app) => {
-        app.use(express.urlencoded({extended: true}));
+        app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
     });
 

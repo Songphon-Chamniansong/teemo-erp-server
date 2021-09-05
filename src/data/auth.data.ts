@@ -1,12 +1,7 @@
+import { UserData } from './user.data';
+
 export interface AuthToken {
-    account: {
-        id: string;
-        code: string;
-        role: string;
-        permission: {
-            [key: string]: string
-        }
-    };
+    account: UserData;
     iat?: number;
     exp?: number;
 }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { sign, verify, VerifyErrors, JwtPayload } from 'jsonwebtoken';
+import { UserData } from '../data/user.data';
 import { AuthToken } from '../data/auth.data';
-import { CreateCustomer } from '../data/customer.data';
 
 const secret: string = process.env.TOKEN_SECRET || 'Teemo';
 
@@ -36,7 +36,7 @@ export class Authentication {
         return authToken;
     }
 
-    public static GenerateAccessToken(user: CreateCustomer): string {
+    public static GenerateAccessToken(user: UserData): string {
         const token = sign({ account: user }, secret, { expiresIn: '3h' });
         return token;
     }

@@ -8,6 +8,8 @@ import express from 'express';
 // import controller
 import './controllers/home.controller';
 import './controllers/po.controller';
+import './controllers/user.controller';
+import './controllers/inventory.controller';
 
 // Load process.env config
 ProcessConfigLoader.Load('/dist/.env');

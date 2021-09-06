@@ -4,11 +4,13 @@
         "esModuleInterop": true,
         "target": "es5",
         "lib": [
-            "es6"
+            "es6",
+            "es2017",
         ],
         "types": [
             "reflect-metadata", "jest"
         ],
+        "declaration": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noImplicitAny": true,
